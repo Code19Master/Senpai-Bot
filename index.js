@@ -66,7 +66,7 @@ let embed = new Discord.MessageEmbed()
 .addField("GAME COMMANDS:video_game:",
 '`--rps`' )
 .addField("FUN COMMANDS",
-'`--rr`, ' + '`--hack`, ' + '`--meme`, ' + '`--coinflip`, ' + '`--roast`')
+'`--rr`, ' + '`--hack`,' + '`--coinflip`, ' + '`--roast`,' + '`--fact`')
 .addField("MODERATION COMMANDS",
 '`--kick`, ' + '`--ban`, ' + '`--purge`, ' + '`--mute`, ' + '`--unmute`')
 .addField("TECHNOLOGY COMMANDS:man_technologist:",
@@ -137,14 +137,6 @@ m4.edit(`done hacking ${user}! all info was sent online.`)
 });
 };
 
-//advice
-client.on("message", async message => {
-  if(message.content === "--advice") {
-  let data = await random.getAdvice()
-    message.channel.send(data)
-   
-  }
-})
  //coinflip
  if (message.content === "--coinflip") {
  let replies = ["Heads", "Tails"];
@@ -273,13 +265,17 @@ if(message.content.toLowerCase().startsWith("--roast")){
  let roasts = [`${user}, You look like you chomp on tree bark for fun`, `${user}, You're ugly when you cry.`, `${user}, When you die, people will struggle to think of nice things to say about you.`, `${user}, May the fleas of ten thousand camels live happily upon your buttocks`, `${user}, Your birth certificate is an apology letter from the abortion clinic.`, `${user}, The pitch of your voice drives dogs insane`, `${user}, I would call you a cunt, but you lack the warmth or the depth.`]
  message.channel.send(roasts[Math.floor(Math.random() * roasts.length)])
 }
-//fact
-client.on("message", async message => {
-  if(message.content === "--fact") {
-let data = await random.getFact();
-    message.channel.send(data);
-  }
-})
+//funfact
+if(message.content.startsWith("--fact")){
+ let ff =["Some fungi create zombies, then control their minds", "The first oranges weren’t orange", "There’s only one letter that doesn’t appear in any U.S. state name", "A cow-bison hybrid is called a beefalo", "Johnny Appleseed’s fruits weren’t for eating", "Scotland has 421 words for snow" , "Samsung tests phone durability with a butt-shaped robot", "The “Windy City” name has nothing to do with Chicago weather", "Peanuts aren’t technically nut", "Armadillo shells are bulletproof", "You are a sussy baka", "Firefighters use wetting agents to make water wetter", "The longest English word is 189,819 letters long", "Octopuses lay 56,000 eggs at a time", "Cats have fewer toes on their back paws", "Blue whales eat half a million calories in one mouthful"]
+let funfact = new Discord.MessageEmbed()
+ .setTitle("Fun And Fake Fact!")
+ .setDescription(`${ff[Math.floor(Math.random() * ff.length)]}`)
+ .setColor("RANDOM")
+ .setFooter(`Made By CodeMaster100#7978`);
+ message.channel.send(funfact)
+}
+
 });
 
 
