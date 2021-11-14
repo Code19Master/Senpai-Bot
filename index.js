@@ -11,6 +11,8 @@ app.listen(3000,() => {
 
 let Discord = require("discord.js");
 let client = new Discord.Client();
+client.setMaxListeners(0);
+const random = require("something-random-on-discord").Random
 
 //status
 client.on("ready", message =>{
@@ -135,59 +137,14 @@ m4.edit(`done hacking ${user}! all info was sent online.`)
 });
 };
 
-//meme
-const https = require('https');
- const url = 'https://www.reddit.com/r/memes/hot/.json?limit=100';
-
- if (message.content.startsWith('--meme')) {
- https.get(url, result => {
- var body = '';
- result.on('data', chunk => {
- body += chunk;
- });
-
- result
- .on('end', () => {
- var response = JSON.parse(body);
- var index =
- response.data.children[Math.floor(Math.random() * 99) + 1].data;
-
- var link = 'https://reddit.com' + index.permalink;
-
- if (index.post_hint !== 'image') {
- var text = index.selftext;
- const textembed = new Discord.MessageEmbed()
- .setTitle(`${title}`)
- .setColor('RANDOM')
- .setURL(link);
-
- message.channel.send(textembed);
- }
-
- var image = index.preview.images[0].source.url.replace('&amp;', '&');
- var title = index.title;
- var subRedditName = index.subreddit_name_prefixed;
-
- if (index.post_hint !== 'image') {
- const textembed = new Discord.MessageEmbed()
- .setTitle(`${title}`)
- .setColor('RANDOM')
- .setURL(link);
-
- message.channel.send(textembed);
- }
- const imageembed = new Discord.MessageEmbed()
- .setTitle(`${title}`)
- .setImage(image)
- .setColor('RANDOM')
- .setURL(link);
- message.channel.send(imageembed);
- })
- .on('error', function(e) {
- console.log('Got an error: ', e);
- });
- });
- }
+//advice
+client.on("message", async message => {
+  if(message.content === "--advice") {
+  let data = await random.getAdvice()
+    message.channel.send(data)
+   
+  }
+})
  //coinflip
  if (message.content === "--coinflip") {
  let replies = ["Heads", "Tails"];
@@ -316,6 +273,13 @@ if(message.content.toLowerCase().startsWith("--roast")){
  let roasts = [`${user}, You look like you chomp on tree bark for fun`, `${user}, You're ugly when you cry.`, `${user}, When you die, people will struggle to think of nice things to say about you.`, `${user}, May the fleas of ten thousand camels live happily upon your buttocks`, `${user}, Your birth certificate is an apology letter from the abortion clinic.`, `${user}, The pitch of your voice drives dogs insane`, `${user}, I would call you a cunt, but you lack the warmth or the depth.`]
  message.channel.send(roasts[Math.floor(Math.random() * roasts.length)])
 }
+//fact
+client.on("message", async message => {
+  if(message.content === "--fact") {
+let data = await random.getFact();
+    message.channel.send(data);
+  }
+})
 });
 
 
