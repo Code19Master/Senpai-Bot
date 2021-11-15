@@ -67,7 +67,7 @@ let embed = new Discord.MessageEmbed()
 .addField("GAME COMMANDS:video_game:",
 '`--rps`' )
 .addField("FUN COMMANDS",
-'`--rr`, ' + '`--hack`,' + '`--coinflip`, ' + '`--roast`,' + '`--fact`')
+'`--rr`, ' + '`--hack`,' + '`--coinflip`, ' + '`--roast`, ' + '`--fact`, ' + '`--say`')
 .addField("MODERATION COMMANDS",
 '`--kick`, ' + '`--ban`, ' + '`--purge`, ' + '`--mute`, ' + '`--unmute`, ' + '`--membercount`, ' + '`--serverinfo`')
 .addField("TECHNOLOGY COMMANDS:man_technologist:",
@@ -298,7 +298,18 @@ if(message.content === "--serverinfo") {
 
  message.channel.send(embed)
 }
+//say
+ if (message.content.toLowerCase().startsWith("--say")) {
+ message.delete()
+ let say = message.content.split(" ")
+ let content = say.slice(1).join(" ")
+ if (!content) message.reply("What You Want Me To Say")
+ 
 
+ else {
+ message.channel.send(`${content}`)
+ }
+}
 });
 
 
