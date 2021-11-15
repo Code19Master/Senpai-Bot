@@ -69,7 +69,7 @@ let embed = new Discord.MessageEmbed()
 .addField("FUN COMMANDS",
 '`--rr`, ' + '`--hack`,' + '`--coinflip`, ' + '`--roast`,' + '`--fact`')
 .addField("MODERATION COMMANDS",
-'`--kick`, ' + '`--ban`, ' + '`--purge`, ' + '`--mute`, ' + '`--unmute`,' + '`--membercount`')
+'`--kick`, ' + '`--ban`, ' + '`--purge`, ' + '`--mute`, ' + '`--unmute`, ' + '`--membercount`, ' + '`--serverinfo`')
 .addField("TECHNOLOGY COMMANDS:man_technologist:",
 '`--avatar`, ' + '`--snipe`')
 .addField("INVITE ME",
@@ -282,7 +282,22 @@ let funfact = new Discord.MessageEmbed()
     message.channel.send(message.guild.memberCount)
   }
 
+//ServerInfo
+if(message.content === "--serverinfo") {
+ let embed = new Discord.MessageEmbed()
+ .setColor("RANDOM")
+ .setAuthor(`Info for ${message.guild}`, message.guild.iconURL({ dynamic: true }))
+ .addField("Owner", message.guild.owner, true)
+ .addField("Channels", message.guild.channels.cache.size, true)
+ .addField("Roles", message.guild.roles.cache.size, true)
+ .addField("Emojis", message.guild.emojis.cache.size, true)
+ .addField("Verification Level", message.guild.verificationLevel, true)
+ .addField("Region", `${message.guild.region}`, true)
+ .setThumbnail(message.guild.iconURL({ dynamic: true }))
+ .setFooter(`ID: ${message.guild.id}, Created • ${message.guild.createdAt.toDateString()}`)
 
+ message.channel.send(embed)
+}
 
 });
 
