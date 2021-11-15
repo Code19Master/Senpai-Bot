@@ -60,6 +60,7 @@ if (message.content === "--avatar" || message.content === "--Avatar" || message.
 .setFooter(`${message.author.username}`)
 message.channel.send(embed)
 }
+//help
 if(message.content.startsWith("--help")) {
 let embed = new Discord.MessageEmbed()
 .setTitle("SENPAI BOT COMMAND")
@@ -68,7 +69,7 @@ let embed = new Discord.MessageEmbed()
 .addField("FUN COMMANDS",
 '`--rr`, ' + '`--hack`,' + '`--coinflip`, ' + '`--roast`,' + '`--fact`')
 .addField("MODERATION COMMANDS",
-'`--kick`, ' + '`--ban`, ' + '`--purge`, ' + '`--mute`, ' + '`--unmute`')
+'`--kick`, ' + '`--ban`, ' + '`--purge`, ' + '`--mute`, ' + '`--unmute`,' + '`--membercount`')
 .addField("TECHNOLOGY COMMANDS:man_technologist:",
 '`--avatar`, ' + '`--snipe`')
 .addField("INVITE ME",
@@ -275,6 +276,13 @@ let funfact = new Discord.MessageEmbed()
  .setFooter(`Made By CodeMaster100#7978`);
  message.channel.send(funfact)
 }
+//membercount
+  if (message.content.toLowerCase() === "--membercount") {
+
+    message.channel.send(message.guild.memberCount)
+  }
+
+
 
 });
 
