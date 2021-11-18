@@ -12,12 +12,30 @@ app.listen(3000,() => {
 let Discord = require("discord.js");
 let client = new Discord.Client();
 client.setMaxListeners(0);
+const moment = require("moment")
 const random = require("something-random-on-discord").Random
 
 //status
-client.on("ready", message =>{
-  client.user.setPresence({ activity: { name: "Amog Us" }, status:"idle" })
-})
+client.on('ready', () => {
+ console.log(`Discord.js: Ready on: ${client.user.tag} ✅`)
+
+ const arrayOfStatus = [
+    `Watching Attack On Titan ⚔️⚜️⛩🔰`,
+    `Among Us 🔪`,
+    `Coding My freind 💻`,
+    `Listening to your favourite Music 🎵`,
+    `--help || By CodeMaster100#7978`,
+ ];
+  
+  let index = 0;
+  setInterval(() => {
+    if(index === arrayOfStatus.length) index = 0;
+    const status = arrayOfStatus[index];
+    //console.log(status);
+    client.user.setActivity(status);
+    index++;
+  }, 5000)
+});
 
 //snipe message delete event
 client.snipes = new Discord.Collection
@@ -328,6 +346,8 @@ Oreo`), (`An alien named MEE6 abducted ${victim} in their sleep`),]
  message.channel.send(`${replies[Math.floor(Math.random() * replies.length)]}`) 
  }
  }
+ 
+ 
 });
 
 
