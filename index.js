@@ -85,7 +85,7 @@ let embed = new Discord.MessageEmbed()
 .addField("GAME COMMANDS:video_game:",
 '`--rps`' )
 .addField("FUN COMMANDS",
-'`--rr`, ' + '`--hack`,' + '`--coinflip`, ' + '`--roast`, ' + '`--fact`, ' + '`--say`, ' + '`--kill`')
+'`--rr`, ' + '`--hack`,' + '`--coinflip`, ' + '`--roast`, ' + '`--fact`, ' + '`--say`, ' + '`--kill`, ' + '`--timer`')
 .addField("MODERATION COMMANDS",
 '`--kick`, ' + '`--ban`, ' + '`--purge`, ' + '`--mute`, ' + '`--unmute`, ' + '`--membercount`, ' + '`--serverinfo`')
 .addField("TECHNOLOGY COMMANDS:man_technologist:",
@@ -93,7 +93,7 @@ let embed = new Discord.MessageEmbed()
 .addField("INVITE ME",
 '`--invite`')
 .addField("JOIN MY SUPPORT SERVER",
-'`COMING SOON`')
+'`--server`')
 .setColor("RANDOM")
 .setFooter("Created by: CodeMaster100#7978 ")
 .setTimestamp()
@@ -346,8 +346,31 @@ Oreo`), (`An alien named MEE6 abducted ${victim} in their sleep`),]
  message.channel.send(`${replies[Math.floor(Math.random() * replies.length)]}`) 
  }
  }
- 
- 
+ //Support Server
+ if (message.content.toLowerCase() === "--server") {
+    let owner = client.users.cache.get("779749147989245972")
+    let embed = new Discord.MessageEmbed()
+      .setTitle("Here is my Support Server Invite Link")
+      .setDescription(
+       "https://discord.gg/N4HCXMxmR8"
+      )
+      .addField("This Is The Support Server Of Senpai Bot",
+      ':smiley:')
+      .setColor("RANDOM")
+      .setFooter(`Created by ${owner.username}`, owner.displayAvatarURL());
+    message.channel.send(embed);
+  }                                                              
+//timer
+if(message.content.toLowerCase().startsWith('--timer')){
+ const args = message.content.split(' ').splice(1);
+ if(!args[0]) return message.channel.send('please include a valid time');
+ if(isNaN(args[0])) return message.channel.send('please include a valid number');
+ if(!args[1]) return message.channel.send('you have to include something for me to remind you with')
+ setTimeout(() => {
+ const msg = args.splice(1).join(' ');
+ message.channel.send(`${message.author}, ${msg}`)
+ }, parseInt(args[0], 10) * 1000)
+}
 });
 
 
