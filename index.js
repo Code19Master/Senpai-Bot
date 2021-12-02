@@ -70,29 +70,33 @@ if (message.content.startsWith("--kick")) {
  }
  }
  //avatar
-if (message.content === "--avatar" || message.content === "--Avatar" || message.content === "--AVATAR") { 
- let embed = new Discord.MessageEmbed()
-.setTitle("YOUR AVATAR!")
-.setImage(`${message.author.displayAvatarURL({dynamic : true})}`)
-.setColor("RANDOM")
-.setFooter(`${message.author.username}`)
-message.channel.send(embed)
-}
+  if (message.content.toLowerCase() === "--avatar") {
+    let theUser = message.mentions.users.first() || message.author
+    let avemb = new Discord.MessageEmbed()
+      .setTitle(theUser.tag)
+      .setImage(theUser.displayAvatarURL({ size: 2048, dynamic: true }))
+      .setColor('RANDOM')
+      .setFooter(`Requested by ${message.author.tag}`, message.author.displayAvatarURL({ dynamic: true }))
+    message.channel.send(avemb)
+  }
+
 //help
 if(message.content.startsWith("--help")) {
 let embed = new Discord.MessageEmbed()
 .setTitle("SENPAI BOT COMMAND")
 .addField("GAME COMMANDS:video_game:",
 '`--rps`' )
-.addField("FUN COMMANDS",
+.addField("FUN COMMANDS <a:rbgblobvibe:872848644930437160>",
 '`--rr`, ' + '`--hack`,' + '`--coinflip`, ' + '`--roast`, ' + '`--fact`, ' + '`--say`, ' + '`--kill`, ' + '`--timer`')
-.addField("MODERATION COMMANDS",
+.addField("MODERATION COMMANDS <:pepecool:872848646759133214>",
 '`--kick`, ' + '`--ban`, ' + '`--purge`, ' + '`--mute`, ' + '`--unmute`, ' + '`--membercount`, ' + '`--serverinfo`')
 .addField("TECHNOLOGY COMMANDS:man_technologist:",
 '`--avatar`, ' + '`--snipe`')
-.addField("INVITE ME",
+.addField("EMOJI COMMANDS FOR EVERY MOOD",
+'`Coming Soon`')
+.addField("INVITE ME <a:carefreegojo:878592538397786142>",
 '`--invite`')
-.addField("JOIN MY SUPPORT SERVER",
+.addField("JOIN MY SUPPORT SERVER <a:blobchain:872848646016757800>",
 '`--server`')
 .setColor("RANDOM")
 .setFooter("Created by: CodeMaster100#7978 ")
@@ -371,6 +375,7 @@ if(message.content.toLowerCase().startsWith('--timer')){
  message.channel.send(`${message.author}, ${msg}`)
  }, parseInt(args[0], 10) * 1000)
 }
+
 });
 
 
