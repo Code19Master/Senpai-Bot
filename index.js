@@ -11,6 +11,8 @@ app.listen(3000,() => {
 
 let Discord = require("discord.js");
 let client = new Discord.Client();
+const Database = require("@replit/database");
+const db = new Database();
 client.setMaxListeners(0);
 const moment = require("moment")
 const random = require("something-random-on-discord").Random
@@ -37,6 +39,7 @@ client.on('ready', () => {
   }, 5000)
 });
 
+
 //snipe message delete event
 client.snipes = new Discord.Collection
 client.on('messageDelete', function(message, channel) {
@@ -50,7 +53,7 @@ client.on('messageDelete', function(message, channel) {
 });
 
 //rick roll command
-client.on("message", message => {
+client.on("message", async message => {
 if (message.content === "--rr") {
  message.channel.send("https://tenor.com/bItJt.gif")
  message.channel.send("you have been rick rolled")
@@ -88,12 +91,16 @@ let embed = new Discord.MessageEmbed()
 '`--rps`' )
 .addField("FUN COMMANDS <a:rbgblobvibe:872848644930437160>",
 '`--rr`, ' + '`--hack`,' + '`--coinflip`, ' + '`--roast`, ' + '`--fact`, ' + '`--say`, ' + '`--kill`, ' + '`--timer`')
+.addField("ECONOMY COMMANDS",
+'`--addmoney`, ' + '`--removemoney`,' + '`--beg`, ' + '`--work`, ' + '`--daily`, ' + '`--bal`, ' + '`--withdraw`, ' + '`--deposit`')
 .addField("MODERATION COMMANDS <:pepecool:872848646759133214>",
-'`--kick`, ' + '`--ban`, ' + '`--purge`, ' + '`--mute`, ' + '`--unmute`, ' + '`--membercount`, ' + '`--serverinfo`')
+'`--kick`, ' + '`--ban`, ' + '`--purge`, ' + '`--mute`, ' + '`--unmute`, ' + '`--membercount`, ' + '`--serverinfo`, ' +      '`--emoji`')
 .addField("TECHNOLOGY COMMANDS:man_technologist:",
 '`--avatar`, ' + '`--snipe`')
 .addField("EMOJI COMMANDS FOR EVERY MOOD",
 '`Coming Soon`')
+.addField("INFORMATION OF SENAPI BOT",
+'`--info`')
 .addField("INVITE ME <a:carefreegojo:878592538397786142>",
 '`--invite`')
 .addField("JOIN MY SUPPORT SERVER <a:blobchain:872848646016757800>",
@@ -381,8 +388,178 @@ if (message.content === "LOL") {
 if (message.content === "lOl") {
  message.channel.send("<:kekw:872848645676990485>")
 }
+
+if (message.content === "loL") {
+ message.channel.send("<:kekw:872848645676990485>")
+}
+
+//Info
+if(message.content.startsWith("--info")) {
+let embed = new Discord.MessageEmbed()
+.setTitle("SENPAI BOT Information")
+.addField("What is SENPAI BOT <:thonk:872848645710557225>" ,
+"Senpai Bot is a bot designed to keep your server safe and keep your Server Fun. Its moderation and logging suite keep track of your members and keep your moderators accountable. Its auto-moderator capabilities also allow it to filter out certain types of behavior without need for human intervention, lightening the load on the staff team. Finally, Senapi Bot is designed to be fast and easy to use. ")
+
+.addField("DEVELOPER <:Developer:922020965871923200>",
+"CodeMaster100#7978")
+
+.addField("SUPPORT SERVER <a:blobchain:872848646016757800>",
+'`--server`')
+.setColor("RANDOM")
+.setFooter("Created by: CodeMaster100#7978 ")
+.setTimestamp()
+message.channel.send(embed)
+}
   
-});
+  //8ball
+  if (message.content.toLowerCase().startsWith("--8ball")) {
+    let replies = ["Yes", "No", "Maybe", "Not sure", "Shut up you rat!", "sure, why not", "when you grow a braincell, yes", "THAT'S A SOLID ****NO****", "Nah that sucks tbh"]
+    let randomized = replies[Math.floor(Math.random() * replies.length)]
+    let sentence = message.content.split(" ");
+    sentence.shift();
+    sentence = sentence.join(" ");
+    if (!sentence) message.reply("WHAT DO YOU WANT TO ASK 8BALL?")
+    let embed = new Discord.MessageEmbed()
+      .setTitle("8Ball")
+      .addField("Your Question", `${sentence}`)
+      .addField("8Ball:", `${randomized}`)
+      .setColor("RANDOM")
+      .setFooter(" ")
+    message.channel.send(embed)
+  }
+//ping
+    if (message.content === "--ping") {
+    let embed = new Discord.MessageEmbed()
+      .setTitle("🏓 Pong!")
+      .setDescription(`**${client.ws.ping}ms** Latency!`)
+      .setColor("RANDOM")
+      .setFooter(
+        `Requested by ${message.author.username}`,
+        message.author.displayAvatarURL()
+      );
+    message.channel.send(embed);
+  }
+  //emoji
+    if (command === "--emoji") {
+    let name = args[0]
+    let link = args[1]
+    if (!name) return message.channel.send("`-emoji [name] [link]` is the correct method")
+    if (!link) return message.channel.send("`-emoji [name] [link]` is the correct method")
+    message.guild.emojis.create(link, name)
+    message.channel.send("✅ Emoji has been created")
+  }
+
+
+  //economy
+  //balance
+    if(message.content.toLowerCase().startsWith("--balance") || message.content.toLowerCase().startsWith("--bal")) {
+  let balance = await db.get(`wallet_${message.author.id}`)
+  let bank = await db.get(`bank_${message.author.id}`)
+
+  if(balance === null) balance = 0
+  if(bank === null) bank = 0
+  let currency = "$"
+  let moneyEmbed = new Discord.MessageEmbed()
+  .setTitle(`${message.author.username}'s Balance`)
+  .setDescription(`Wallet:${currency}${balance}\nBank:${currency}${bank}`)
+  .setColor("GREEN")
+  .setThumbnail(message.author.displayAvatarURL({dynamic: true}))
+ message.channel.send(moneyEmbed)
+  }
+
+  //daily
+ if(message.content.toLowerCase().startsWith("--daily")) {
+    const check = await db.get(`dailyCheck_${message.author.id}`)
+    const timeout = 86400000;
+    if(check !== null && timeout - (Date.now() - check) > 0) {
+      const ms = require("pretty-ms")
+      const currency = "$"
+      const timeLeft = ms(timeout - (Date.now() - check))
+      message.channel.send(`You have already claimed your daily price,Come back after **${timeLeft}**`)
+    } else {
+      let reward = 200
+      let currentBal = await db.get(`wallet_${message.author.id}`)
+      message.channel.send(`Congratulations ${message.author.id}! You Received ${currency}${reward} As Your Daily Reward! `)
+      await db.set(`wallet_${message.author.id}`, currentBal + reward)
+      await db.set(`dailyCheck_${message.author.id}`, Date.now())
+    }
+  }
+
+  //work
+  if(message.content.toLowerCase().startsWith("--work")) {
+  const check = await db.get(`workCheck_${message.author.id}`)
+  const timeout = 3600000
+  if(check !== null && timeout - (Date.now() - check) > 0) {
+    const ms = require("pretty-ms")
+    let currency = "$"
+    const timeLeft = ms(timeout - (Date.now() - check))
+    message.channel.send(`Hey Man You Already Completed Your Work. Come After **${timeLeft}**`)
+  } else {
+    let randomReward = Math.floor(Math.random() * 50 + 100)
+    let currentBalance = await db.get(`wallet_${message.author.id}`)
+    message.channel.send(`Woah, You Earned ${currency}${randomReward.toLocaleString()}!`)
+    await db.set(`wallet_${message.author.id}`, currentBalance + randomReward)
+    await db.set(`workCheck_${message.author.id}`, Date.now())
+  }
+}
+
+//beg
+  if(message.content.toLowerCase().startsWith("--beg")) {
+  const check = await db.get(`workCheck_${message.author.id}`)
+  const timeout = 30000
+  let currency = '$'
+  if(check !== null && timeout - (Date.now() - check) > 0) {
+    const ms = require("pretty-ms")
+    const timeLeft = ms(timeout - (Date.now() - check))
+    message.channel.send(`Stop Begging So Much! Wait For **${timeLeft}**`)
+  } else {
+    let randomReward = Math.floor(Math.random() * 1 + 50)
+    let currentBalance = await db.get(`wallet_${message.author.id}`)
+    message.channel.send(`You Earned ${currency}${randomReward.toLocaleString()} While Begging On The Streets.`)
+    await db.set(`wallet_${message.author.id}`, currentBalance + randomReward)
+    await db.set(`workCheck_${message.author.id}`, Date.now())
+  }
+  }
+  
+  //deposit
+   if(message.content.toLowerCase().startsWith("--deposit")) {
+     let balance = await db.get(`wallet_${message.author.id}`)
+     let bank = await db.get(`bank_${message.author.id}`)
+     let currency = '$'
+     await db.set(`bank_${message.author.id}`, balance + bank)
+     await db.set(`wallet_${message.author.id}`, balance - balance)
+     message.channel.send(`Hey Nerd, You Deposited ${currency}${balance}`)
+   }
+
+//withdraw
+  if(message.content.toLowerCase().startsWith("--withdraw")) {
+     let balance = await db.get(`wallet_${message.author.id}`)
+     let bank = await db.get(`bank_${message.author.id}`)
+     let currency = '$'
+     await db.set(`bank_${message.author.id}`, bank - bank)
+     await db.set(`wallet_${message.author.id}`, balance + bank)
+     message.channel.send(`Hey Nerd, You Withdrawed ${currency}${bank}`)
+   }
+//LB COMMAN
+
+//add Money and Remove money
+  if(message.content.toLowerCase().startsWith("--addmoney") || message.content.toLowerCase().startsWith("--removemoney")) {
+ let addmoneyembed = new Discord.MessageEmbed()
+ .setColor('BLACK')
+ .setTitle('AddMoney/RemoveMoney Command')
+ .setThumbnail('https://cdn.discordapp.com/emojis/861188641966784512.png?v=1')
+ .addFields(
+ { name: 'AddMoney', value: '1,2,5,10,50,100' , inline: true},
+ { name: 'Example', value: '--addmoney 50' , inline: false}
+ )
+ .addFields(
+{ name: 'RemoveMoney', value: '1,2,5,10,50,100' , inline: true},
+ { name: 'Example', value: '--removemoney 2' , inline: false}
+ )
+ .setTimestamp()
+message.channel.send(addmoneyembed);
+  }
+  }) 
 
 
 
