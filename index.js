@@ -227,42 +227,7 @@ if(message.content.startsWith("--unmute")) {
  message.reply("You don't have permission to do that!")
  }
 }
-//eval
-if(message.content.startsWith(`--eval`)){
 
-const notowner = new Discord.MessageEmbed()
-.setDescription("Only the bot owner can use this command")
-.setColor("RED")
-const owners_id = ["779749147989245972"];
- if (!owners_id.includes(message.author.id))
- return message.channel.send(notowner); const args2 = message.content.split(" ").slice(1);
-
- const clean = text => {
- if (typeof(text) === "string")
- return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
- else
- return text;
-}
- 
- try {
- const code = args2.join(" ");
- let evaled = eval(code);
-const lmao = message.content.slice("".length).trim().split(/ +/);
-lmao.shift().toLowerCase().split(" ")[0]
-msg.channel.send(lmao.join(" "))
- const { inspect } = require("util");
-const output = clean(evaled)
-
- const eval2 = new Discord.MessageEmbed()
- .addField("Input", `\`\`\`js\n${lmao.join(" ")}\`\`\``)
- .addField("Output", `\`\`\`js\n${output}\`\`\``)
- 
- // msg.channel.send(clean(evaled));
- message.channel.send(eval2)
- } catch (err) {
- message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
- }
-};
 //snipe
   if (message.content === "--snipe") {
      let channel = message.mentions.channels.first() || message.channel
@@ -375,7 +340,48 @@ if(message.content.toLowerCase().startsWith('--timer')){
  message.channel.send(`${message.author}, ${msg}`)
  }, parseInt(args[0], 10) * 1000)
 }
+//eval
+  if (message.author.bot) return;
+  const args = message.content.split(" ");
+  const command = args.shift().toLowerCase();
 
+  if (command === "--eval") {
+    let owners = ["779749147989245972"];
+    if (!owners.includes(message.author.id)) {
+      message.channel.send(" :x: only bot owners can use this ");
+    } else {
+      let evaled;
+      try {
+        evaled = eval(args.join(" "));
+        message.channel.send(inspect(evaled));
+        console.log(inspect(evaled));
+      } catch (error) {
+        console.error(error);
+        message.channel.send("");
+      }
+    }
+  }
+//lol
+if (message.content === "lol") {
+ message.channel.send("<:kekw:872848645676990485>")
+}
+
+if (message.content === "Lol") {
+ message.channel.send("<:kekw:872848645676990485>")
+}
+
+if (message.content === "LOl") {
+ message.channel.send("<:kekw:872848645676990485>")
+}
+
+if (message.content === "LOL") {
+ message.channel.send("<:kekw:872848645676990485>")
+}
+
+if (message.content === "lOl") {
+ message.channel.send("<:kekw:872848645676990485>")
+}
+  
 });
 
 
